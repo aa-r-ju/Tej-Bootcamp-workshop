@@ -1,7 +1,12 @@
 const express = require('express')
 const app = express()
 app.use(express.json())
+const cors = require("cors")
+const { request } = require('http')
+  
 
+app.use(cors())
+app.use(express.static("dist"))
 
 let notes = [
     {
@@ -33,9 +38,9 @@ let notes = [
   app.use(requestLogger)
 
 
-  app.get('/', (request, response) => {
-    response.send('<h1>Hello World!</h1>')
-  })
+  // app.get('/', (request, response) => {
+  //   response.send('<h1>Hello World!</h1>')
+  // })
   
   app.get('/api/notes', (request, response) => {
     response.json(notes)
@@ -59,12 +64,38 @@ let notes = [
     response.status(204).send(`The note at id ${myId} has been deleted`)
   })
 
+
   app.post('/api/notes', (request, response) => {
     const note = request.body
     note.id = notes.length+1
     notes.push(note)
     response.status(201).json(note)
   })
+
+
+
+  app.put("/api/notes/:id", (request, response) => {
+    const myId = Number(request.params.id);
+    const updatedNote = request.body;
+    let noteFound = false;
+  
+    const updatedNotes = notes.map((note) => {
+      if (note.id !== myId) return note;
+      else {
+        noteFound = true;
+        return updatedNote;
+      }
+    });
+  
+    if (noteFound) {
+      notes = updatedNotes;
+  
+      response.status(202).json(updatedNote);
+    } else {
+      response.status(404).send(`There are no notes at ${myId}`);
+    }
+  });
+  
 
 
 

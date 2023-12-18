@@ -7,10 +7,20 @@ GET http://localhost:3001/api/notes/
 GET http://localhost:3001/
 ###
 
-POST http://localhost:3001/api/notes/ HTTP/1.1
+POST http://localhost:3001/api/notes/ 
 content-type: application/json
 
 {
     "content": "sample",
     "important": false
 }
+###
+
+PUT http://localhost:3001/api/notes/2
+content-type: application/json
+
+{
+    "content": "cinema",
+    "important": true
+}
+###
