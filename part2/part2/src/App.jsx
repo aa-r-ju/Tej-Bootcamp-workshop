@@ -14,6 +14,7 @@ useEffect(() => {
   noteService
   .getAll()
   .then(initialNotes => {
+    console.log(initialNotes,"aarju,,,")
     setNotes(initialNotes)
   })
 }, [])
@@ -47,7 +48,11 @@ useEffect(() => {
 
 
     const toggleImportanceOf = id => {
-      const note = notes.find(n => n.id === id)
+      const note = notes.find((n) => {
+        console.log(n,"value")
+        return n.id === id
+
+      })
       const changedNote = { ...note, important: !note.important}
 
       noteService
