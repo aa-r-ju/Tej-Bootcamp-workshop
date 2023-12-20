@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js",
-    "prod":"node index.js"
+    "prod":"node index.js",
+    "build:ui":"rm -rf dist && rm -rf ../../part3/note-server/dist && npm run build && cp -r dist ../../part3/note-server"
   },
   "keywords": [],
   "author": "",
