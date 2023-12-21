@@ -70,7 +70,7 @@ useEffect(() => {
 
   return (
     <div>
-      <h1>Notes</h1>
+      <h1> My Notes</h1>
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all' }
@@ -82,7 +82,7 @@ useEffect(() => {
         )}
       </ul>
       <form onSubmit={addNote}>
-      <input value={newNote} onChange={handleNoteChange} />
+      <input value={newNote} onChange={handleNoteChange} />  
         <button type="submit">save</button>
       </form>  
     </div>
