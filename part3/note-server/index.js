@@ -3,28 +3,39 @@ const app = express()
 app.use(express.json())
 const cors = require("cors")
 const { request } = require('http')
-  
+const mongoose = require('mongoose')
+
+const url =
+`mongodb+srv://Phonebook:phonebook@phonebook.fclcj21.mongodb.net/Phonebook?retryWrites=true&w=majority`
+mongoose.set('strictQuery',false)
+mongoose.connect(url)
+
+const noteSchema = new mongoose.Schema({
+  content: String,
+  important: Boolean,
+})
+
+
+noteSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
+const Note = mongoose.model('Note', noteSchema)
+
+
+
+
+
+
 
 app.use(cors())
 app.use(express.static("dist"))
 
-let notes = [
-    {
-      id: 1,
-      content: "HTML is easy",
-      important: true
-    },
-    {
-      id: 2,
-      content: "Browser can execute only JavaScript",
-      important: false
-    },
-    {
-      id: 3,
-      content: "GET and POST are the most important methods of HTTP protocol",
-      important: true
-    }
-  ]
+let notes = []
 
 
   const requestLogger = (request, response, next) => {
@@ -39,7 +50,9 @@ let notes = [
 
   
   app.get('/api/notes', (request, response) => {
-    response.json(notes)
+    Note.find({}).then((result)=>{
+      response.json(result)
+    })
   })
 
   app.get('/api/notes/:id', (request, response) => {
@@ -66,6 +79,16 @@ let notes = [
     note.id = notes.length+1
     notes.push(note)
     response.status(201).json(note)
+
+    // const note = new Note({
+    //   content: 'HTML is not Easy',
+    //   important: true,
+    // })
+    
+    // note.save().then(result => {
+    //   console.log('note saved!')
+    //   mongoose.connection.close()
+    // })
   })
 
 
