@@ -132,7 +132,6 @@ app.post('/api/notes', (request, response) => {
     next(error)
   }
   
-  // this has to be the last loaded middleware.
   app.use(errorHandler)
 
 
