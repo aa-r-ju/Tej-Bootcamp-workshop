@@ -2,12 +2,14 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 const cors = require("cors")
-const { request } = require('http')
+require('http')
 const mongoose = require('mongoose')
-const { LEGAL_TCP_SOCKET_OPTIONS } = require('mongodb')
+require('mongodb')
+require("dotenv").config()
 
-const url =
-`mongodb+srv://Phonebook:phonebook@phonebook.fclcj21.mongodb.net/Phonebook?retryWrites=true&w=majority`
+
+const url = process.env.MONGODB_URL
+
 mongoose.set('strictQuery',false)
 mongoose.connect(url)
 
@@ -28,16 +30,8 @@ noteSchema.set('toJSON', {
 const Note = mongoose.model('Note', noteSchema)
 
 
-
-
-
-
-
 app.use(cors())
 app.use(express.static("dist"))
-
-let notes = []
-
 
   const requestLogger = (request, response, next) => {
     console.log('Method:', request.method)
@@ -69,9 +63,9 @@ let notes = []
 })
 app.delete('/api/notes/:id', (request, response, next) => { 
   Note.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(
       response.status(204).end()
-    })
+     )
     .catch(error => next(error))
 })
 
@@ -135,6 +129,5 @@ app.post('/api/notes', (request, response) => {
 
 
 
-const PORT = process.env.PORT ? process.env.PORT : 3001;
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+  app.listen(process.env.PORT)
+  console.log(`Server running on port ${process.env.PORT}`);
