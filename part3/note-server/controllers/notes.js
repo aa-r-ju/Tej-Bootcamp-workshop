@@ -1,13 +1,13 @@
 const app = require("express").Router()
 const Note = require("../models/note")
 
-app.get('/api/notes', (request, response) => {
+app.get('/', (request, response) => {
     Note.find({}).then((result)=>{
       response.json(result)
     })
   })
 
-  app.get('/api/notes/:id', (request, response, next) => {
+  app.get('/:id', (request, response, next) => {
     Note.findById(request.params.id).then(result => {
       if (result) {
         response.json(result)
@@ -18,7 +18,7 @@ app.get('/api/notes', (request, response) => {
       next(e)
     })
 })
-app.delete('/api/notes/:id', (request, response, next) => { 
+app.delete('/:id', (request, response, next) => { 
   Note.findByIdAndDelete(request.params.id)
     .then(
       response.status(204).end()
@@ -27,7 +27,7 @@ app.delete('/api/notes/:id', (request, response, next) => {
 })
 
 
-app.post('/api/notes', (request, response) => {
+app.post('/', (request, response) => {
   const body = request.body
 
   if (body.content === undefined) {
@@ -46,7 +46,7 @@ app.post('/api/notes', (request, response) => {
 
 
 
-  app.put('/api/notes/:id', (request, response, next) => {
+  app.put('/:id', (request, response, next) => {
     const body = request.body
   
     const note = {
