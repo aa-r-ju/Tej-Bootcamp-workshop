@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const mongoose = require('mongoose')
 
 if (process.argv.length<3) {
